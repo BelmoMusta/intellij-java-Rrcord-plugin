@@ -23,30 +23,16 @@ public class PsiUtils {
                     .nodePredicate(psiClass -> psiClass.getInnerClasses().length != 0)
                     .directChildrenGetter(aCls -> Arrays.asList(aCls.getInnerClasses()))
                     .retainFilter(cls -> !cls.isInterface() && !cls.isEnum());
-            return dfsBuilder.toList();
-
+            psiClasses.addAll(dfsBuilder.toList());
         }
         return psiClasses;
     }
     public static List<PsiElement> getAllJavaFiles(PsiElement dir) {
         DfsBuilder<PsiElement> dfsBuilder = new DfsBuilder<>();
         dfsBuilder.root(dir);
-        dfsBuilder.nodePredicate(element -> element instanceof PsiDirectory);
-        dfsBuilder.leafPredicate(element -> element instanceof PsiJavaFile);
+        dfsBuilder.nodePredicate(PsiDirectory.class::isInstance);
+        dfsBuilder.leafPredicate(PsiJavaFile.class::isInstance);
         dfsBuilder.directChildrenGetter(psiElement -> Arrays.asList(psiElement.getChildren()));
         return dfsBuilder.toList();
-    }
-    /**
-     * uncapitalize the inout String
-     *
-     * @param input @link String}
-     * @return String
-     */
-    public static String capitalize(String input) {
-        String output = input;
-        if (input != null && !input.isEmpty()) {
-            output = Character.toUpperCase(input.charAt(0)) + input.substring(1);
-        }
-        return output;
     }
 }
