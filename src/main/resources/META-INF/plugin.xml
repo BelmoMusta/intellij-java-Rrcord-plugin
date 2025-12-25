@@ -32,14 +32,14 @@
     <actions>
         <group id="musta.belmo.plugins.action.CustomDefaultActionGroup.JavaRrecord"
                class="musta.belmo.plugins.action.CustomDefaultActionGroup"
-               text="Lombokify" description="Lombokify">
+               text="Java Record" description="Convert to Java Record">
 
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <add-to-group group-id="ToolsMenu" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
             <!-- Add your actions here -->
             <action id="musta.belmo.plugins.action.JavaRecordAction"
-                    class="musta.belmo.plugins.action.JavaRecordAction" text="To Java Record"
+                    class="musta.belmo.plugins.action.JavaRecordAction" text="Convert to Java Record"
                     description="Turn into java record class">
             </action>
         </group>

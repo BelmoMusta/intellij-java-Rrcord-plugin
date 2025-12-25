@@ -54,7 +54,7 @@ public class PsiJavaRecordTransformer implements Transformer {
     private static void handleMethods(PsiClass psiClass) {
         for (PsiField field : psiClass.getFields()) {
             for (PsiMethod method : psiClass.getMethods()) {
-                if (method.hasModifierProperty("static")){
+                if (method.hasModifierProperty("static")) {
                     continue;
                 }
                 if (method.getName().equalsIgnoreCase("get" + field.getName()) && !method.hasParameters()) {
@@ -82,7 +82,6 @@ public class PsiJavaRecordTransformer implements Transformer {
         return fields;
     }
     private static PsiClass createRecord(PsiClass psiClass, List<PsiField> fields) {
-        PsiElementFactory instance = PsiElementFactory.getInstance(psiClass.getProject());
         PsiClass copy = (PsiClass) psiClass.copy();
         for (@NotNull PsiElement child : copy.getChildren()) {
             if (isaClassKeyword(child)) {
@@ -91,14 +90,16 @@ public class PsiJavaRecordTransformer implements Transformer {
                 child.replace(recordKeyWord);
             }
         }
+
         for (PsiElement child : copy.getChildren()) {
             if (child instanceof PsiIdentifier identifier && identifier.getText().equals(psiClass.getName())) {
-                PsiRecordHeader header = createHeader(psiClass, fields, instance);
+                PsiRecordHeader header = createHeader(psiClass, fields);
                 copy.addAfter(header, identifier);
             }
         }
         return copy;
     }
+
     private static boolean isaClassKeyword(@NotNull PsiElement child) {
         return child instanceof PsiKeyword && child.getText().equals("class");
     }
@@ -108,8 +109,8 @@ public class PsiJavaRecordTransformer implements Transformer {
         }
     }
     private static PsiRecordHeader createHeader(PsiClass psiClass,
-                                                List<PsiField> fields,
-                                                PsiElementFactory instance) {
+                                                List<PsiField> fields) {
+        PsiElementFactory instance = PsiElementFactory.getInstance(psiClass.getProject());
         int i = 0;
         String[] fieldNames = new String[fields.size()];
         PsiType[] fieldTypes = new PsiType[fields.size()];
@@ -127,7 +128,7 @@ public class PsiJavaRecordTransformer implements Transformer {
 
     @Override
     public String getActionName() {
-        return "Java Record";
+        return "Convert to Java Record";
     }
     @Override
     public boolean isApplied() {
